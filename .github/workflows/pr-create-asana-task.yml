@@ -37,3 +37,4 @@ jobs:
           pr-description: ${{ github.event.pull_request.body }}
           pr-author: ${{ github.event.pull_request.user.login }}
           branch-name: ${{ github.event.pull_request.head.ref }}
+          optional-tag: ${{ secrets.asana_task_tag }}
