@@ -82,18 +82,18 @@ function getBranchName(branchName: string, prUrl: string, title: string) {
 
 function getAsanaTaskDescription(taskTitle: string, authorName: string, prDescription: string, prUrl: string) {
     let taskNotes = '';
-    taskNotes += `*Task Name:*\n ${taskTitle}\n\n`;
+    taskNotes += `\\*Task Name:\\*\n ${taskTitle}\n\n`;
     if (authorName) {
-        taskNotes += `*Branch Author:*\n ${authorName}\n\n`;
+        taskNotes += `\\*Branch Author:\\*\n ${authorName}\n\n`;
     }
-    taskNotes += '*Changes:*\n\n';
+    taskNotes += '\\*Changes:\\*\n\n';
 
     if (prDescription && prDescription.trim()) {
         taskNotes += prDescription.trim();
     }
 
     if (prUrl && prUrl.trim()) {
-        taskNotes += `\n\nPR URL: ${prUrl}`;
+        taskNotes += `\n\n\\*PR URL\\*: ${prUrl}`;
     }
 
     taskNotes += '\n\nThis task was created via GitHub Actions';
