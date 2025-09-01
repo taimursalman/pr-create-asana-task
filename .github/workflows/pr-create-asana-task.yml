@@ -1,0 +1,39 @@
+name: Create Asana Task on PR
+
+on:
+  pull_request:
+    types: [ opened, reopened ]
+
+jobs:
+  asana:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: '.github/actions'
+          sparse-checkout-cone-mode: false
+
+      - name: Get PR author emails
+        id: get-emails
+        run: |
+          commit_email=$(gh api /repos/${{ github.repository }}/pulls/${{ github.event.number }}/commits --jq '.[-1].commit.author.email')
+          echo "commit_email=$commit_email" >> $GITHUB_OUTPUT
+
+          github_user="${{ github.event.pull_request.user.login }}"
+          echo "github_user=$github_user" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Asana Task
+        uses: ./
+        with:
+          token: ${{ secrets.asana_access_token }}
+          title: ${{ github.event.pull_request.title }}
+          projectId: ${{ secrets.asana_project_id }}
+          assignee-email: ${{ steps.get-emails.outputs.commit_email }}
+          github-user: ${{ steps.get-emails.outputs.github_user }}
+          pr-url: ${{ github.event.pull_request.html_url }}
+          pr-description: ${{ github.event.pull_request.body }}
+          pr-author: ${{ github.event.pull_request.user.login }}
+          branch-name: ${{ github.event.pull_request.head.ref }}
