@@ -1,0 +1,44 @@
+name: "Create Asana Task"
+description: "Creates a new task in Asana"
+author: "Taimur Salman"
+inputs:
+  token:
+    description: "Asana Personal Access Token"
+    required: true
+  title:
+    description: "Task title"
+    required: true
+  projectId:
+    description: "Asana project GID"
+    required: true
+  assignee-email:
+    description: "Email of person to assign task to"
+    required: false
+  github-user:
+    description: "GitHub username of PR author"
+    required: false
+  pr-url:
+    description: "Pull request URL"
+    required: false
+  pr-description:
+    description: "Pull request description"
+    required: false
+  pr-author:
+    description: "Name of user that opened the PR"
+    required: false
+  branch-name:
+    description: "Name of the branch"
+    required: false
+  sprint-tag:
+    description: "ID of a sprint tag to be added to the task"
+    required: false
+
+outputs:
+  taskId:
+    description: "The GID of the created task"
+  taskUrl:
+    description: "The URL of the created task"
+
+runs:
+  using: "node20"
+  main: "./index.js"
