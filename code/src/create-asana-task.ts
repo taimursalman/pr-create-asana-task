@@ -15,7 +15,7 @@ export const createAsanaTask = async () => {
         const prDescription = core.getInput('pr-description') || '';
         const prAuthor = core.getInput('pr-author') || githubUser || '';
         const branchName = core.getInput('branch-name') || '';
-        const sprintTagId = core.getInput('sprint-tag') || '';
+        const sprintTagId = core.getInput('optional-tag') || '';
 
         core.info(`Title: ${prTitle}`);
         core.info(`ProjectId: ${asanaProjectId}`);
