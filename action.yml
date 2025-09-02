@@ -1,33 +1,33 @@
-name: "Create Asana Task on PR Creation"
-description: "Creates a new task in Asana"
+name: "Suite of actions for managing GitHub PRs with Asana task"
+description: "Depending on what option is provided in 'method', either creates a new task in Asana, assigns the task to the PR's reviewer, or marks it as complete"
 author: "Taimur Salman"
 inputs:
   token:
     description: "Asana Personal Access Token"
     required: true
-  title:
-    description: "Task title"
-    required: true
   projectId:
     description: "Asana project GID"
     required: true
+  title:
+    description: "Task title (will use PR title if not provided)"
+    required: false
   assignee-email:
     description: "Email of person to assign task to"
     required: false
   github-user:
-    description: "GitHub username of PR author"
+    description: "GitHub username of PR author (automatically extracted from PR context if not provided)"
     required: false
   pr-url:
-    description: "Pull request URL"
+    description: "Pull request URL (automatically extracted from PR context if not provided)"
     required: false
   pr-description:
-    description: "Pull request description"
+    description: "Pull request description (automatically extracted from PR context if not provided)"
     required: false
   pr-author:
-    description: "Name of user that opened the PR"
+    description: "Name of user that opened the PR (automatically extracted from PR context if not provided)"
     required: false
   branch-name:
-    description: "Name of the branch"
+    description: "Name of the branch (automatically extracted from PR context if not provided)"
     required: false
   optional-tag:
     description: "Tag ID to be added to the task"

@@ -1,21 +1,19 @@
 import * as core from '@actions/core';
-import {TaskData} from "@/create-asana-task.types";
-import {createAsanaTaskFromData, findAsanaUserByEmail, getWorkspaceGid} from "@/create-asana-task-library";
+import {TaskData} from "@/actions.types";
+import {createAsanaTaskFromData, findAsanaUserByEmail, getPRDataWithFallback, getWorkspaceGid} from "@/actions.library";
 // CodeReviewTaimurSDone: missing import for fetch
 // CodeReviewTaimurSDone: file isn't following TS formatting standards
 
-export const createAsanaTask = async () => {
+export const createAsanaTaskAction = async () => {
     try {
         const asanaAuthToken = core.getInput('token');
-        const prTitle = core.getInput('title');
         const asanaProjectId = core.getInput('projectId');
         const assigneeEmail = core.getInput('assignee-email');
-        const githubUser = core.getInput('github-user');
-        const prUrl = core.getInput('pr-url') || '';
-        const prDescription = core.getInput('pr-description') || '';
-        const prAuthor = core.getInput('pr-author') || githubUser || '';
-        const branchName = core.getInput('branch-name') || '';
         const sprintTagId = core.getInput('optional-tag') || '';
+
+        // Get PR data automatically from GitHub context with fallback to manual inputs
+        const prData = getPRDataWithFallback();
+        const {prUrl, prDescription, prAuthor, githubUser, branchName, prTitle} = prData;
 
         core.info(`Title: ${prTitle}`);
         core.info(`ProjectId: ${asanaProjectId}`);
@@ -82,18 +80,18 @@ function getBranchName(branchName: string, prUrl: string, title: string) {
 
 function getAsanaTaskDescription(taskTitle: string, authorName: string, prDescription: string, prUrl: string) {
     let taskNotes = '';
-    taskNotes += `*Task Name:*\n ${taskTitle}\n\n`;
+    taskNotes += `\\*Task Name:\\*\n ${taskTitle}\n\n`;
     if (authorName) {
-        taskNotes += `*Branch Author:*\n ${authorName}\n\n`;
+        taskNotes += `\\*Branch Author:\\*\n ${authorName}\n\n`;
     }
-    taskNotes += '*Changes:*\n\n';
+    taskNotes += '\\*Changes:\\*\n\n';
 
     if (prDescription && prDescription.trim()) {
         taskNotes += prDescription.trim();
     }
 
     if (prUrl && prUrl.trim()) {
-        taskNotes += `\n\nPR URL: ${prUrl}`;
+        taskNotes += `\n\n\\*PR URL\\*: ${prUrl}`;
     }
 
     taskNotes += '\n\nThis task was created via GitHub Actions';
