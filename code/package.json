@@ -8,12 +8,13 @@
     "typecheck": "tsc --noEmit",
     "build": "ncc build src/index.ts -o build/ -m -q --no-source-map-register --target es2022 && npm run clean-build-artifacts",
     "clean-actions": "cd build && rm -rf * || true",
-    "clean-build-artifacts": "cd build && rm -rf package.json && find . -name '*.d.ts*' -delete 2>/dev/null || true",
+    "clean-build-artifacts": "cd build && rm -rf */ && rm -rf package.json && find . -name '*.d.ts*' -delete 2>/dev/null || true",
     "clean": "npm run clean-actions"
   },
   "dependencies": {
     "@actions/core": "^1.11.1",
     "@actions/github": "^6.0.1",
+    "@octokit/rest": "^22.0.0",
     "node-fetch": "^2.7.0"
   },
   "devDependencies": {
